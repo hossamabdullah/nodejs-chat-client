@@ -1,0 +1,37 @@
+<html>
+
+    <head>
+        <title></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <div id="textAreaFileContents"></div>
+        <input id="inputFileToLoad" type="file" onchange="encodeImageFileAsURL()" />
+        <br />
+
+        <script>
+            function encodeImageFileAsURL() {
+
+                var filesSelected = document.getElementById("inputFileToLoad").files;
+                if (filesSelected.length > 0)
+                {
+                    var fileToLoad = filesSelected[0];
+
+                    var fileReader = new FileReader();
+
+                    fileReader.onload = function(fileLoadedEvent) {
+                        var srcData = fileLoadedEvent.target.result; // <--- data: base64
+
+                        var socket = io();   
+                            alert(srcData);
+                            socket.emit('chat message', srcData);
+                            
+                    };
+                    fileReader.readAsDataURL(fileToLoad);
+                }
+            }
+
+        </script>
+    </body>
+</html>
